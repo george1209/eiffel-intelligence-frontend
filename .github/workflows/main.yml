@@ -97,7 +97,7 @@ jobs:
           java -Dspring.config.additional-location=file:../src/integrationtest/resources/integration-test.properties -Dserver.port=${EI_BACKEND_PORT} -jar ${EIFFEL_WAR} &
           cd ..
           echo 'Sleeping till EI is up.'
-          timeout 30 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$EI_BACKEND_PORT/status)" != "200" ]]; do sleep 5; done' || false   
+          timeout 60 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$EI_BACKEND_PORT/status)" != "200" ]]; do sleep 5; done' || false   
           
       - name: Run Integration tests
         run: |
