@@ -88,7 +88,7 @@ jobs:
           source src/main/docker/env.bash
           docker compose -f src/main/docker/docker-compose.yml up -d eiffel-er mongodb rabbitmq jenkins mail-server ldap ldap-seed ldap2 ldap2-seed
           echo 'Sleeping till Jenkins is up.'
-          timeout 90 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$JENKINS_PORT/login)" != "200" ]]; do sleep 5; done' || false
+          timeout 180 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$JENKINS_PORT/login)" != "200" ]]; do sleep 5; done' || false
           git clone --depth=50 --branch=master https://github.com/eiffel-community/eiffel-intelligence.git
           cd eiffel-intelligence
           chmod +x pom.xml
@@ -97,7 +97,7 @@ jobs:
           java -Dspring.config.additional-location=file:../src/integrationtest/resources/integration-test.properties -Dserver.port=${EI_BACKEND_PORT} -jar ${EIFFEL_WAR} &
           cd ..
           echo 'Sleeping till EI is up.'
-          timeout 120 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$EI_BACKEND_PORT/status)" != "200" ]]; do sleep 5; done' || false   
+          timeout 240 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' $HOST:$EI_BACKEND_PORT/status)" != "200" ]]; do sleep 5; done' || false   
           
       - name: Run Integration tests
         run: |
